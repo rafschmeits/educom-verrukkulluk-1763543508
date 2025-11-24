@@ -1,24 +1,26 @@
 <?php
-// Database connectie
-$dsn = "mysql:host=localhost;dbname=recepten_db;charset=utf8mb4";
-$pdo = new PDO($dsn, "root", "");
+require_once("lib/database.php");
+require_once("lib/artikel.php");
 
-// Class inladen
-require_once __DIR__ . "/classes/Artikel.php";
+$db = new database();
+$conn = $db->getConnection();
 
-// Zoekterm ophalen
-$naam = $_GET['naam'] ?? '';
+$artikel = new Artikel($conn);
 
-// Artikel zoeken via selectArticle
-$artikel = Artikel::selectArticle($pdo, $naam);
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$artikelData = null;
 
-if ($artikel) {
-    echo "<h1>" . $artikel->getNaam() . "</h1>";
-    echo "<p>Omschrijving: " . $artikel->getOmschrijving() . "</p>";
-    echo "<p>Prijs: €" . number_format($artikel->getPrijs(), 2, ',', '.') . "</p>";
-    echo "<p>Eenheid: " . $artikel->getEenheid() . "</p>";
-    echo "<p>Verpakking: " . $artikel->getVerpakking() . "</p>";
+if ($id > 0) {
+    $artikelData = $artikel->selecteerArtikel($id);
+}
+
+if ($artikelData) {
+    echo "<h2>" . htmlspecialchars($artikelData['naam']) . "</h2>";
+    echo "<p>Omschrijving: " . htmlspecialchars($artikelData['omschrijving']) . "</p>";
+    echo "<p>Prijs: €" . htmlspecialchars($artikelData['prijs']) . "</p>";
+    echo "<p>Eenheid: " . htmlspecialchars($artikelData['eenheid']) . "</p>";
+    echo "<p>Verpakking: " . htmlspecialchars($artikelData['verpakking']) . "</p>";
 } else {
-    echo "<p>Geen artikel gevonden met naam: " . htmlspecialchars($naam) . "</p>";
+    echo "<p>Geen artikel gevonden.</p>";
 }
 ?>
