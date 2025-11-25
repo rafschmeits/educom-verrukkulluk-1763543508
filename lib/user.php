@@ -17,16 +17,5 @@ class User {
 
         return $user ?: null;
     }
-
-    // Haal een user op via email (handig voor login)
-    public function selecteerUserOpEmail(string $email): ?array {
-        $stmt = $this->connection->prepare("SELECT * FROM user WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-
-        return $user ?: null;
-    }
 }
 ?>

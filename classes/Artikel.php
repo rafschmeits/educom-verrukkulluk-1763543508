@@ -1,1 +1,0 @@
-https://github.com/rafschmeits/educom-verrukkulluk-1763543508/issues/5
