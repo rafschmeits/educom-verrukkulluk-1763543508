@@ -7,17 +7,11 @@ require_once("lib/Artikel.php");
 $db = new Database();
 $conn = $db->getConnection();
 
-// Maak objecten
+// Maak object van Ingredient
 $ingredientRepo = new Ingredient($conn);
-$artikelRepo = new Artikel($conn);
 
 // Test: haal alle ingrediënten van gerecht met ID 1
-$ingrediënten = $ingredientRepo->selectIngredient(1);
-
-// Voeg artikelgegevens toe via Artikel-class
-foreach ($ingrediënten as &$i) {
-    $i['artikel'] = $artikelRepo->selecteerArtikel((int)$i['artikel_id']);
-}
+$ingrediënten = $ingredientRepo->selectIngredient(2);
 
 // Toon resultaat
 echo "<h2>Test Ingrediënten + Artikelen</h2>";
