@@ -70,38 +70,26 @@ public function calcPrice(int $gerecht_id): float {
    
 
   // selectRating: bereken gemiddelde waardering via GerechtInfo->selectInfo
-    public function selectRating(int $gerecht_id): ?float {
-        $infoRepo = new GerechtInfo($this->connection);
-        $records  = $infoRepo->selectInfo($gerecht_id); 
+  public function selectRating(int $gerecht_id): ?float {
+    $infoRepo = new GerechtInfo($this->connection);
+    $records  = $infoRepo->selectUserRecords($gerecht_id, 'W'); 
 
-        $ratings = [];
-        foreach ($records as $record) {
-            if ($record['record_type'] === 'W' && isset($record['aantal'])) {
-                $ratings[] = (float)$record['aantal'];
-            }
-        }
+    $ratings = array_column($records, 'aantal');
 
-        if (empty($ratings)) {
-            return null; 
-        }
-
-        return array_sum($ratings) / count($ratings); 
+    if (empty($ratings)) {
+        return null;
     }
 
-       // selectSteps: haalt ALLE stappen (record_type = 'B') van een gerecht op
-    public function selectSteps(int $gerecht_id): array {
-        $infoRepo = new GerechtInfo($this->connection);
-        $records  = $infoRepo->selectInfo($gerecht_id); 
+    return array_sum($ratings) / count($ratings);
+}
 
-        $steps = [];
-        foreach ($records as $record) {
-            if (isset($record['record_type']) && $record['record_type'] === 'B') {
-                $steps[] = $record;
-            }
-        }
 
-        return $steps; 
-    }
+// Stappen (bereiding)
+public function selectSteps(int $gerecht_id): array {
+    $infoRepo = new GerechtInfo($this->connection);
+    return $infoRepo->selectUserRecords($gerecht_id, 'B'); 
+}
+
 
     // methode opmerkingen ophalen
 public function selectRemarks(int $gerecht_id): array {
@@ -155,6 +143,40 @@ public function determineFavorite(int $gerecht_id, int $user_id): bool {
     return false;
 }
 
+    // ✅ Nieuwe functie: alles in één array teruggeven
+    public function getFullRecipe(int $gerecht_id, int $user_id): array {
+        $recipe = $this->selectRecipe($gerecht_id);
+
+        if (!$recipe) {
+            return [];
+        }
+
+       return [
+        'id'              => $recipe['id'],
+        'titel'           => $recipe['titel'],
+        'korte_omschrijving' => $recipe['korte_omschrijving'],
+        'lange_omschrijving' => $recipe['lange_omschrijving'],
+        'afbeelding'      => $recipe['afbeelding'],
+        'datum_toegevoegd'=> $recipe['datum_toegevoegd'],
+
+        // vervang IDs door sub‑arrays
+        'user'   => $this->selectUser($gerecht_id),
+        'kitchen'=> $this->selectKitchen($gerecht_id),
+        'type'   => $this->selectType($gerecht_id),
+
+        // extra info
+        'ingredients' => $this->selectIngredient($gerecht_id),
+        'calories'    => $this->calcCalories($gerecht_id),
+        'price'       => $this->calcPrice($gerecht_id),
+        'rating'      => $this->selectRating($gerecht_id),
+        'steps'       => $this->selectSteps($gerecht_id),
+        'remarks'     => $this->selectRemarks($gerecht_id),
+        'favorite'    => $this->determineFavorite($gerecht_id, $user_id)
+    ];
 }
+
+}
+
 ?>
+
 

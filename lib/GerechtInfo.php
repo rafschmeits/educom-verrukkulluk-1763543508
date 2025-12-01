@@ -32,7 +32,6 @@ class GerechtInfo {
     }
 
 
-
     return $records;
 }
 
