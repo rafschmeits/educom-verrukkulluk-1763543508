@@ -1,0 +1,35 @@
+{% extends 'main.html.twig' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-center">Boodschappenlijst</h2>
+
+      <ul class="list-group mt-3">
+        {% for item in lijst %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <img src="{{ item.afbeelding }}" alt="{{ item.naam }}" class="me-3" style="width:50px; height:50px; object-fit:cover;">
+              <span>
+                {{ item.naam }} ({{ item.aantal }} {{ item.verpakking }})
+                <small class="text-muted">à {{ item.inhoudPak }} {{ item.eenheid }}</small>
+              </span>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="me-3">€ {{ item.prijs_totaal|number_format(2, ',', '.') }}</span>
+              <a href="index.php?page=boodschappenlijst&remove={{ item.artikel_id }}" class="btn btn-sm btn-outline-danger">Verwijder</a>
+            </div>
+          </li>
+        {% else %}
+          <li class="list-group-item">Nog geen artikelen toegevoegd</li>
+        {% endfor %}
+      </ul>
+
+      <div class="mt-3 text-end">
+        <strong>Totaal: € {{ totaal|number_format(2, ',', '.') }}</strong>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

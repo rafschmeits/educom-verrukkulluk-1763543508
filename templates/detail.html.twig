@@ -1,5 +1,136 @@
 {% extends "main.html.twig" %}
 
-{% block header %}
-<h1>Hallo Bram</h1>
+{% block content %}
+<div class="gerecht-detail container mt-4">
+
+<div class="row mb-4" style="height: 400px;">
+  {# 📸 Foto links #}
+  <div class="col-md-6 h-100">
+    <img src="{{ gerecht.afbeelding }}" alt="{{ gerecht.titel }}" class="img-fluid rounded shadow h-100 object-fit-cover">
+  </div>
+
+  {# ℹ️ Info rechts met scroll #}
+  <div class="col-md-6 h-100 overflow-auto pe-3">
+    <ul class="list-inline fs-5 mb-2">
+      <li class="list-inline-item">👨‍👩‍👧‍👦 4</li>
+      <li class="list-inline-item">💰 €{{ gerecht.price|number_format(2, ',', '.') }}</li>
+      <li class="list-inline-item">🍽 {{ gerecht.calories }} kcal</li>
+      <li class="list-inline-item">⭐ {{ gerecht.rating ?? 'Geen rating' }}</li>
+    </ul>
+
+    <h1 class="mb-2">{{ gerecht.titel }}</h1>
+
+    <ul class="list-inline text-muted mb-2">
+      <li class="list-inline-item">🏷️ {{ gerecht.kitchen.omschrijving }}</li>
+      <li class="list-inline-item">🍴 {{ gerecht.type.omschrijving }}</li>
+    </ul>
+
+    <p class="lead">{{ gerecht.lange_omschrijving }}</p>
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <!-- knop boodschappenlijst -->
+  <button
+    class="btn btn-danger"
+    onclick="window.location.href='index.php?page=boodschappenlijst&id={{ gerecht.id }}'">
+    Op lijst
+  </button>
+
+
+   <!-- favorieten toggle -->
+  {% if gerecht.favorite %}
+    <!-- Als gerecht al favoriet is: rood gevuld hartje -->
+    <a href="index.php?favorite=delete&id={{ gerecht.id }}&from=detail" class="text-danger">
+      <i class="bi bi-heart-fill"></i>
+    </a>
+  {% else %}
+    <!-- Als gerecht nog geen favoriet is: leeg hartje -->
+    <a href="index.php?favorite=add&id={{ gerecht.id }}&from=detail" class="text-danger">
+      <i class="bi bi-heart"></i>
+    </a>
+  {% endif %}
+</div>
+
+
+  </div>
+</div>
+
+<div class="container mt-5">
+  <ul class="nav nav-tabs" id="gerechtTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="ingredienten-tab"
+              data-bs-toggle="tab" data-bs-target="#ingredienten"
+              type="button" role="tab">Ingrediënten</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="bereiding-tab"
+              data-bs-toggle="tab" data-bs-target="#bereiding"
+              type="button" role="tab">Bereidingswijze</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="opmerkingen-tab"
+              data-bs-toggle="tab" data-bs-target="#opmerkingen"
+              type="button" role="tab">Opmerkingen</button>
+    </li>
+  </ul>
+
+  <div class="tab-content border border-top-0 p-4" id="gerechtTabsContent">
+
+    {# Ingrediënten #}
+    <div class="tab-pane fade show active" id="ingredienten" role="tabpanel">
+      <div class="scroll-pane">
+        <div class="list-group">
+          {% for ing in gerecht.ingredients %}
+            <div class="list-group-item d-flex align-items-start">
+              <img src="{{ ing.artikel.afbeelding }}" alt="{{ ing.artikel.naam }}"
+                   class="me-3 rounded" style="width:80px; height:80px; object-fit:cover;">
+              <div class="flex-grow-1">
+                <h5 class="mb-1">{{ ing.artikel.naam }}</h5>
+                <p class="mb-1 text-muted">{{ ing.artikel.omschrijving }}</p>
+                <small class="text-dark">
+                  Hoeveelheid: {{ ing.aantal }} {{ ing.artikel.eenheid }}
+                </small>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {# Bereiding #}
+    <div class="tab-pane fade" id="bereiding" role="tabpanel">
+      <div class="scroll-pane">
+        <ul class="list-group">
+          {% for stap in gerecht.steps %}
+            <li class="list-group-item">
+              <strong>Stap {{ stap.stap }}:</strong> {{ stap.tekstveld }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    {# Opmerkingen #}
+    <div class="tab-pane fade" id="opmerkingen" role="tabpanel">
+      <div class="scroll-pane">
+        <ul class="list-group">
+          {% for opm in gerecht.remarks %}
+            <li class="list-group-item d-flex align-items-center">
+              <img src="{{ opm.user.afbeelding }}" alt="{{ opm.user.user_name }}"
+                   class="me-2 rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+              <div>
+                <strong>{{ opm.user.user_name }}</strong><br>
+                {{ opm.tekstveld }}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 {% endblock %}
+
+

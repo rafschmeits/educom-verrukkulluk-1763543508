@@ -174,9 +174,31 @@ public function determineFavorite(int $gerecht_id, int $user_id): bool {
         'favorite'    => $this->determineFavorite($gerecht_id, $user_id)
     ];
 }
-
+// Alle gerechten ophalen zonder sortering
+public function selectAllRecipes(): array {
+    $stmt = $this->connection->prepare("
+        SELECT *
+        FROM gerecht
+    ");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+
+public function selectAllFavorites(int $user_id): array {
+    $stmt = $this->connection->prepare("
+        SELECT DISTINCT g.id, g.titel, g.korte_omschrijving, g.afbeelding
+        FROM gerecht g
+        JOIN gerecht_info gi ON g.id = gi.gerecht_id
+        WHERE gi.user_id = ? AND gi.record_type = 'F'
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+}
 ?>
 
 

@@ -52,3 +52,303 @@ html, body {
     font-family: "Helvetica Neue", Arial, SansSerif;
     font-size: 16px;
 }
+
+/*dit heb ik toegevoeg */
+.footer-block {
+  background-color: var(--darker-orange);
+  color: white;
+  padding: 20px;
+}
+.footer-block img {
+  display: inline-block;
+}
+.footer-block p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.login-block {
+  background-color: var(--darker-red);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.login-block label {
+  font-weight: bold;
+}
+
+.login-block input {
+  background-color: white;
+  color: black;
+}
+
+.login-btn {
+  background-color: var(--lighter-orange);
+  border: none;
+  padding: 10px;
+}
+
+.agenda-block {
+  background-color: var(--darker-green);
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+}
+
+.agenda-block img {
+  display: inline-block;
+}
+
+.agenda-item strong {
+  color: var(--black);
+}
+
+.agenda-item span {
+  color: var(--black);
+  font-size: 14px;
+}
+
+.agenda-block {
+  margin-bottom: 20px; /* ruimte onder agenda */
+  margin-top: 40px;
+}
+
+
+.login-block {
+  margin-top: 20px; /* ruimte boven login */
+  margin-bottom: 20px;
+}
+
+.header-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 20px;
+  position: relative;
+  z-index: 2;
+  color: white;
+  min-height: 400px;
+}
+
+/* Algemene achtergrond voor alle pagina's */
+.header-block {
+  background-image: url("https://cdn.maxvandaag.nl/2020/12/overmatig-eten-shutterstock_2352676605-1200x667-1.gif");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Detailpagina: gerechtfoto als achtergrond */
+.detail .header-block {
+  background-image: url("{{ gerecht.afbeelding }}");
+  background-size: cover;
+  background-position: center;
+}
+
+
+.header-logo {
+  height: 100px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Zoekveld */
+.header-search input {
+  width: 200px;
+}
+
+/* menu */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+ width: 25px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 3px;
+  background-color: var(--darker-orange);
+  border-radius: 2px;
+}
+
+/* Dropdown menu */
+.menu-dropdown {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  background-color: var(--white);
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+  z-index: 5; /* boven header */
+}
+
+.menu-dropdown.active {
+  transform: translateY(0);
+}
+
+.menu-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.dropdown-logo {
+  height: 70px;
+}
+
+.dropdown-links span {
+  margin-left: 20px;
+  font-weight: bold;
+  color: var(--darker-red);
+}
+
+.homepage-layout {
+  display: flex;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* Sidebar links */
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+/* Grid rechts */
+.gerecht-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.gerecht-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.gerecht-foto {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.gerecht-info {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+}
+
+/* Agenda en gerechten 40px onder header */
+.agenda-block,
+.col-md-9 {
+  margin-top: 40px;
+}
+
+/* Login 40px boven footer */
+.login-block {
+  margin-bottom: 40px;
+}
+/* Zet de ruimte op de container van alle gerechten */
+.gerechten-container {
+  margin-bottom: 40px;
+}
+
+
+.smullen-btn {
+  background-color: var(--lighter-red);
+  color: white;
+  font-family: 'pretty-lily', cursive;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.smullen-btn:hover {
+  background-color: #d94c4c; /* iets donkerder rood bij hover */
+}
+
+.favorite-checkbox {
+  display: none; /* verberg de checkbox */
+}
+
+.favorite-label {
+  font-size: 1.8rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.favorite-label .bi-heart-fill {
+  display: none; /* standaard verborgen */
+  color: red;
+}
+
+.favorite-checkbox:checked + .favorite-label .bi-heart {
+  display: none; /* verberg lege hart */
+}
+
+.favorite-checkbox:checked + .favorite-label .bi-heart-fill {
+  display: inline; /* toon gevuld hart */
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.favorite-checkbox {
+  display: none;
+}
+
+.favorite-label {
+  font-size: 1.8rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.favorite-label .bi-heart-fill {
+  display: none;
+  color: red;
+}
+
+.favorite-checkbox:checked + .favorite-label .bi-heart {
+  display: none;
+}
+
+.favorite-checkbox:checked + .favorite-label .bi-heart-fill {
+  display: inline;
+}
+
+.scroll-pane {
+  max-height: 400px;   /* vaste hoogte */
+  overflow-y: auto;    /* interne scroll */
+}
+
+#gerechtTabsContent {
+  margin-bottom: 20px; /* ruimte tussen tabs en footer */
+}
+
+.menu-link {
+  color: red;         /* normale tekstkleur */
+  text-decoration: none;    /* geen onderstreping */
+  font-weight: bold;        /* optioneel, voor consistentie */
+  display: block;           /* zodat ze netjes onder elkaar staan */
+  margin-bottom: 8px;       /* optioneel, voor ruimte tussen links */
+}

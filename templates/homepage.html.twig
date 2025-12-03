@@ -1,48 +1,25 @@
-{# Opnemen van de "Main" file #}
 {% extends "main.html.twig" %}
 
-{% block header %}
-<img src="assets/img/logo-v2.png"/>
-{% endblock %}
-
-
-{# nu de block content op in de main pagina vullen #}
 {% block content %}
-    {# Dit is commentaar #}
+<div class="gerecht-grid gerechten-container">
+    {% for gerecht in gerechten %}
+        <div class="gerecht-card">
+            <img src="{{ gerecht.afbeelding }}" alt="{{ gerecht.titel }}" class="gerecht-foto">
+            <h2>{{ gerecht.titel }}</h2>
+            <p>{{ gerecht.korte_omschrijving }}</p>
 
-    {# Print #}
-    <h1>Heading #1</h1>
-    <h2>Heading #2</h2>
-    <h3>Heading #3 t/m 5</h3>
+            <!-- Info rij -->
+            <div class="gerecht-info d-flex justify-content-between align-items-center mb-2">
+                <span>👨‍👩‍👧‍👦 4 personen</span>
+                <span>🍽 {{ gerecht.calories }} kcal</span>
+                <span>💰 €{{ gerecht.price|number_format(2, ',', '.') }}</span>
+                <span>⭐ {{ gerecht.rating ?? 'Geen rating' }}</span>
+            </div>
 
-    <h4>Dit is de template {{  title }}</h4>
+            <!-- Smullen button -->
+   <a href="index.php?id={{ gerecht.id }}" class="btn smullen-btn mt-3">Smullen!</a>
 
-{# Loop #}
-    <ul>
-    {% for record in data %}
-        <li>
-            <img src="{{ record.foto }}" style="width: 100px; heigfht: 100px;">
-
-            {{ record.title }}
-            {# sub-loop #}
-            <ul>
-                {% for ingr in record.ingredienten %}
-                    <li>
-                        <span {% if ingr.id < 2 %}style='color: #F00'{% endif %}>{{  ingr.naam }}</span>
-
-                        {# if #}
-                        {%  if ingr.id == 3 %}
-                            <strong>Dit is ID 3!</strong>
-                        {%  endif  %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
+        </div>
     {% endfor %}
-    <ul>
-     {# Dump #}
-       <pre>
-        {{ dump(data) }}
-       </pre>
-
+</div>
 {% endblock %}
